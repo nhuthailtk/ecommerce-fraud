@@ -4,7 +4,7 @@ Heavy files are **not** committed to git (raw CSV ~471MB, processed parquet
 ~550-590MB each, model bundles). Only code + small docs/figures live in the
 repo. Rebuild everything locally with one of the options below.
 
-## Option A — one-shot script (recommended)
+## Option A - one-shot script (recommended)
 
 ```bash
 pip install -r requirements.txt
@@ -34,7 +34,7 @@ No Kaggle account/token? Download the CSV by hand instead:
 ./scripts/get_data.sh --sample 0.15
 ```
 
-## Option B — manual step-by-step
+## Option B - manual step-by-step
 
 Same result as Option A, run one module at a time (useful for debugging a
 single stage):
@@ -55,7 +55,7 @@ already in `data/raw/`):
 ./train.sh            # train only, reusing the existing processed parquet
 ```
 
-## Option C — copy pre-built artifacts (skip rebuilding)
+## Option C - copy pre-built artifacts (skip rebuilding)
 
 If a teammate already ran the pipeline and shared the output files (team
 Drive, USB, etc.), just drop them in place and skip straight to later
@@ -71,7 +71,7 @@ modules:
 
 Each file lets you skip everything upstream of it. `fraud_model.joblib` alone
 is enough to run the API/demo (`uvicorn api.main:app`) without any of the
-others — it bundles the model, transformer, threshold, and feature schema.
+others - it bundles the model, transformer, threshold, and feature schema.
 
 ## Verifying you rebuilt the right thing
 
@@ -88,7 +88,7 @@ scales proportionally (~954,393 rows, same fraud rate).
 ## Why these files are gitignored
 
 `transactions_clean.parquet`/`transactions_context.parquet` are ~550-590MB
-each — well past GitHub's soft limits for a plain git repo. Regenerating them
+each - well past GitHub's soft limits for a plain git repo. Regenerating them
 locally is fast (a few minutes) and guarantees they're byte-for-byte
 consistent with the current code, so it's simpler than trying to version
 half-gigabyte binaries. See `.gitignore` for the exact list of what's excluded.

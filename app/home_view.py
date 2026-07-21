@@ -1,4 +1,4 @@
-"""Executive summary — the 5-second value story.
+"""Executive summary - the 5-second value story.
 
 A KPI header a professor (or a CFO) can read at a glance: volume, fraud
 exposure, money saved by the model, detection performance, and live model
@@ -73,7 +73,7 @@ def render():
         st.markdown("**Top risk signals on flagged transactions**")
         flagged_df = df[flagged]
         reasons = reason_series(flagged_df, top=1)  # single top reason per txn
-        top = (reasons[reasons != "—"].value_counts().head(6)
+        top = (reasons[reasons != "-"].value_counts().head(6)
                .rename_axis("signal").reset_index(name="count"))
         if len(top):
             chart = alt.Chart(top).mark_bar(color="#1565C0").encode(
@@ -88,13 +88,13 @@ def render():
     st.divider()
     st.markdown("**The story, in order** (follow the sidebar top-to-bottom):")
     st.markdown(
-        "1. 🔎 **Segment Analytics** — where fraud concentrates (the problem)\n"
-        "2. 🛡️ **Review Queue** — triage transactions with reason codes (the product)\n"
-        "3. 📊 **Model Evaluation** — how well the models detect, on unseen data (the rigor)\n"
-        "4. 💰 **Cost & ROI** — what detection is worth in € vs. naive baselines (the value)\n"
-        "5. 📡 **Live Feed** — real-time scoring stream\n"
-        "6. 📈 **Monitoring** — drift detection & automated retraining (operations)\n"
-        "7. 🧪 **API Tester** — score a transaction through the live API (serving)"
+        "1. 🔎 **Segment Analytics** - where fraud concentrates (the problem)\n"
+        "2. 🛡️ **Review Queue** - triage transactions with reason codes (the product)\n"
+        "3. 📊 **Model Evaluation** - how well the models detect, on unseen data (the rigor)\n"
+        "4. 💰 **Cost & ROI** - what detection is worth in € vs. naive baselines (the value)\n"
+        "5. 📡 **Live Feed** - real-time scoring stream\n"
+        "6. 📈 **Monitoring** - drift detection & automated retraining (operations)\n"
+        "7. 🧪 **API Tester** - score a transaction through the live API (serving)"
     )
 
 

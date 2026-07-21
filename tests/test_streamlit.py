@@ -70,7 +70,7 @@ def test_monitoring_live_dashboard_renders():
         "st.session_state['mon_test_set'] = pool.iloc[:250].copy()\n"
         "st.session_state['mon_bundle'] = b\n"
         "st.session_state['mon_versions'] = ["
-        "{'version': 1, 'bundle': b, 'when': 'deployed', 'scenario': '—', 'rows': None, "
+        "{'version': 1, 'bundle': b, 'when': 'deployed', 'scenario': '-', 'rows': None, "
         "'fraud': None, 'triggers': [], 'metrics': None},"
         "{'version': 2, 'bundle': b, 'when': '12:00:00', 'scenario': 'Sudden spike', 'rows': 15000, "
         "'fraud': 22, 'triggers': ['x'], 'metrics': None}]\n"

@@ -1,4 +1,4 @@
-# Plan: Task 4 (Module 4) — Feature Engineering trên PaySim
+# Plan: Task 4 (Module 4) - Feature Engineering trên PaySim
 
 ## Context
 
@@ -8,12 +8,12 @@ hiệu base PaySim với synthetic context + destination history.
 ## Feature Groups (trong `src/features.py`)
 
 - `BASE_NUMERIC`: amount, log_amount, amount_cents, balances, balance-reconciliation errors, drained/empty flags, transfer/cash-out flags.
-- `BASE_REALISTIC`: chỉ trường gần authorization-time (bỏ post-transaction balance) — để synthetic/dest context có đất dụng võ.
+- `BASE_REALISTIC`: chỉ trường gần authorization-time (bỏ post-transaction balance) - để synthetic/dest context có đất dụng võ.
 - `SYNTH_NUMERIC`: context M1 (account age, device/risk flags, IP distance, time, velocity minh họa).
 - `DEST_HISTORY_NUMERIC`: feature lịch sử `nameDest` (mục 1).
 - `all`: base + dest + synth + encoded categorical.
 
-## 1. Risk-signal features từ `nameDest` (điểm mạnh — past-only)
+## 1. Risk-signal features từ `nameDest` (điểm mạnh - past-only)
 
 Nguyên tắc: `nameDest` lặp nhiều hơn hẳn `nameOrig` (~single-use) → là entity mule. Khai thác bằng **aggregation past-only**, **KHÔNG dùng ID thô làm feature**.
 
@@ -30,9 +30,9 @@ Nguyên tắc: `nameDest` lặp nhiều hơn hẳn `nameOrig` (~single-use) → 
 - `dest_freq_so_far`, `orig_freq_so_far` (past-only); tuyệt đối không đưa chuỗi ID thô vào ma trận.
 
 **1e. Amount-decimal**:
-- `amount_cents` = phần thập phân của amount (round-number vs lẻ — card-testing).
+- `amount_cents` = phần thập phân của amount (round-number vs lẻ - card-testing).
 
-> **BẮT BUỘC — tính trên FULL chronological, KHÔNG per-subset:** các feature dest-history phải được tính một lần trên toàn bộ dữ liệu đã sort theo `step` (causal: mỗi dòng chỉ dùng quá khứ → an toàn, không leak), rồi mới split. Nếu tính riêng từng subset trong `transform()`, val/test sẽ mất lịch sử train của mỗi dest (bị reset về 0 → `dest_seen_before` ~6.5% thay vì ~35%) gây train/serve skew, làm hỏng chính feature nameDest. Chỉ freq-encoding categorical + imputer + scaler mới fit-on-train.
+> **BẮT BUỘC - tính trên FULL chronological, KHÔNG per-subset:** các feature dest-history phải được tính một lần trên toàn bộ dữ liệu đã sort theo `step` (causal: mỗi dòng chỉ dùng quá khứ → an toàn, không leak), rồi mới split. Nếu tính riêng từng subset trong `transform()`, val/test sẽ mất lịch sử train của mỗi dest (bị reset về 0 → `dest_seen_before` ~6.5% thay vì ~35%) gây train/serve skew, làm hỏng chính feature nameDest. Chỉ freq-encoding categorical + imputer + scaler mới fit-on-train.
 
 ## 2. Encode categorical + scale numeric
 

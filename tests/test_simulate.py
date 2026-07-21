@@ -122,7 +122,7 @@ def test_score_stream_adds_model_and_agg_columns():
 @pytest.mark.skipif(not BUNDLE_PATH.exists(), reason="fraud_ensemble.joblib not built")
 def test_streaming_accumulates_over_ticks():
     # Mirrors the page's per-tick accumulation: stream K rows at a time from a
-    # pool and concatenate — the queue grows monotonically.
+    # pool and concatenate - the queue grows monotonically.
     import pandas as pd
     from ensemble import load_ensemble
     bundle = load_ensemble(BUNDLE_PATH)

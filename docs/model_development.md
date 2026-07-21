@@ -1,4 +1,4 @@
-# Model Development — PaySim Fraud Detection
+# Model Development - PaySim Fraud Detection
 
 ## Methodology
 

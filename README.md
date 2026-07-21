@@ -1,6 +1,6 @@
 # E-Commerce Real-Time Payment Fraud Detection
 
-Business Analytics group project — an end-to-end analytics product:
+Business Analytics group project - an end-to-end analytics product:
 **synthetic data → EDA → cleaning → 3-model ensemble → deployed API + 8-page analyst app
 (review queue, cost/ROI, evaluation, segment analytics) → drift monitoring & retraining.**
 
@@ -13,7 +13,7 @@ we balance blocking fraud against approving legitimate orders?*
 
 ## Data
 
-- **Base (required):** PaySim — Kaggle `rupakroy/online-payments-fraud-detection-dataset`.
+- **Base (required):** PaySim - Kaggle `rupakroy/online-payments-fraud-detection-dataset`.
   Download the CSV into **`data/raw/`** (not committed). 6,362,620 rows, fraud rate
   **0.129%**, fraud occurs **only in TRANSFER & CASH_OUT**.
 - **Synthetic context (required extension):** identity (Faker) + risk signals
@@ -24,7 +24,7 @@ we balance blocking fraud against approving legitimate orders?*
 ## 📥 Getting the data
 
 Heavy files (raw CSV, processed parquet, model bundles) are **not** committed to
-git — they're regenerated locally. One command does it all:
+git - they're regenerated locally. One command does it all:
 
 ```bash
 pip install -r requirements.txt
@@ -36,7 +36,7 @@ for manual download instructions, a faster sample-based option
 (`./scripts/get_data.sh --sample 0.15`), and how to reuse artifacts a teammate
 already built instead of rebuilding from scratch.
 
-- **Base (required):** PaySim — Kaggle `rupakroy/online-payments-fraud-detection-dataset`.
+- **Base (required):** PaySim - Kaggle `rupakroy/online-payments-fraud-detection-dataset`.
   6,362,620 rows, fraud rate **0.129%**, fraud occurs **only in TRANSFER & CASH_OUT**.
 - **Synthetic context (required extension):** identity (Faker) + risk signals
   (device, address mismatch, failed attempts, IP geo-distance, account age, …),
@@ -60,9 +60,9 @@ Once the CSV is in `data/raw/` (via `get_data.sh` or manually):
 
 Or run steps 1-5 together: `./train.sh full` (full 6.36M rows) / `./train.sh sample 0.15`.
 
-> **Windows / PowerShell:** use `python -m uvicorn …` and `python -m streamlit …` — the
+> **Windows / PowerShell:** use `python -m uvicorn …` and `python -m streamlit …` - the
 > bare `uvicorn`/`streamlit` commands only work if their Scripts folder is on your PATH.
-> **You don't need to start the API separately for the app** — the Streamlit app starts
+> **You don't need to start the API separately for the app** - the Streamlit app starts
 > the scoring API in-process automatically (see [Deployment](#deployment)).
 
 ## Streamlit demo app
@@ -70,11 +70,11 @@ Or run steps 1-5 together: `./train.sh full` (full 6.36M rows) / `./train.sh sam
 `python -m streamlit run app/streamlit_app.py` opens an eight-page product built around a
 **3-model ensemble** (Logistic Regression · Random Forest · XGBoost) with a **max-risk**
 aggregate decision (`block > review > allow`). The sidebar is ordered as a presentation
-narrative — pitch → problem → product → rigor → value → operations → serving:
+narrative - pitch → problem → product → rigor → value → operations → serving:
 
 | Page | What it shows | Data |
 |---|---|---|
-| 🏠 **Overview** | Executive KPIs — € saved, fraud loss avoided, recall/precision, model health | held-out test |
+| 🏠 **Overview** | Executive KPIs - € saved, fraud loss avoided, recall/precision, model health | held-out test |
 | 🔎 **Segment Analytics** | Where fraud concentrates: by type, hour, amount + risk-factor **lift** | full population |
 | 🛡️ **Review Queue** | Triage transactions with per-transaction **reason codes** ("why flagged") | 2k sample |
 | 📊 **Model Evaluation** | AUC-PR/ROC/PR curves, confusion matrix, cumulative-gains/lift | held-out test |
@@ -85,7 +85,7 @@ narrative — pitch → problem → product → rigor → value → operations �
 
 Every analytical page carries a 📁 **Data** badge naming its dataset, and all €-figures use
 the cost assumptions in [`src/config.py`](src/config.py) via the shared cost model
-[`src/costs.py`](src/costs.py) — so the app, CLI, and report never disagree. Model metrics are
+[`src/costs.py`](src/costs.py) - so the app, CLI, and report never disagree. Model metrics are
 reported on the **held-out temporal test split** (unseen at training) to avoid train-on-test
 leakage.
 
@@ -94,7 +94,7 @@ leakage.
 The app is designed to run on **single-port hosts** (Streamlit Community Cloud, Hugging Face
 Spaces): [`app/embedded_api.py`](app/embedded_api.py) launches the FastAPI scoring service in a
 background thread on `127.0.0.1:8000`. Because the API Tester calls it **server-side** over
-localhost inside the container, no second public port is needed — the browser only talks to
+localhost inside the container, no second public port is needed - the browser only talks to
 Streamlit. (Locally, if you already run `python -m uvicorn api.main:app`, the app detects the
 open port and reuses it.)
 
@@ -105,7 +105,7 @@ open port and reuses it.)
    synthetic stand-in), and `data/processed/sample_preview.csv`.
 2. On [share.streamlit.io](https://share.streamlit.io) → **New app**, pick the repo/branch.
 3. Set **Main file path** to `app/streamlit_app.py`.
-4. Deploy — `requirements.txt` and `packages.txt` (`libgomp1`, needed by XGBoost) at the repo
+4. Deploy - `requirements.txt` and `packages.txt` (`libgomp1`, needed by XGBoost) at the repo
    root are picked up automatically.
 
 ## Module → file map
@@ -124,25 +124,25 @@ open port and reuses it.)
 ## Key results (full data, 6,362,620 rows, prevalence 0.129%)
 
 - **Deployable model:** XGBoost on the `realistic` feature group (authorization-time
-  signals only) — test **AUC-PR 0.91**, ROC-AUC 0.999, recall 96.8%, loss avoided 99.8%.
+  signals only) - test **AUC-PR 0.91**, ROC-AUC 0.999, recall 96.8%, loss avoided 99.8%.
 - **Leaky reference (not deployable):** `base`/`all` feature groups reach
   AUC-PR≈1.0 because PaySim's post-transaction balance fields near-deterministically
-  encode the label. These are excluded from the saved bundle — see
+  encode the label. These are excluded from the saved bundle - see
   `docs/feature_groups.md` for exactly which columns are leaky vs. deployable,
   and `docs/model_development.md` / `docs/model_results.csv` for the full comparison.
 - Destination-history features (`nameDest` aggregation) are computed once on the
   full chronological frame before the train/val/test split to avoid train/serve skew.
 - Cost weights (`COST_FALSE_NEGATIVE/FALSE_POSITIVE/MANUAL_REVIEW` in `src/config.py`)
-  are business assumptions — see `docs/cost_model_worksheet.md` for how to derive
+  are business assumptions - see `docs/cost_model_worksheet.md` for how to derive
   them with a paper trail instead of guessing.
 
 ## Status
 
-- [x] **P1** — data generation, data dictionary, EDA, cleaning
-- [x] **P2 (draft)** — features, model comparison, leakage check, cost threshold
-- [x] **P3 (draft)** — 3-model ensemble scoring API, 8-page analyst app (review queue,
+- [x] **P1** - data generation, data dictionary, EDA, cleaning
+- [x] **P2 (draft)** - features, model comparison, leakage check, cost threshold
+- [x] **P3 (draft)** - 3-model ensemble scoring API, 8-page analyst app (review queue,
   cost/ROI, model evaluation, segment analytics, live feed), drift monitoring + retraining
-- [x] Single-port deployment ready (embedded API) — deploy to Streamlit Community Cloud
+- [x] Single-port deployment ready (embedded API) - deploy to Streamlit Community Cloud
 - [ ] Publish the live link (Streamlit Community Cloud / Hugging Face Spaces)
 - [ ] Full-data build + imbalance experiments (SMOTE vs class weights)
 - [ ] M8 final report + slides
@@ -150,7 +150,7 @@ open port and reuses it.)
 
 ---
 
-## Batch inference — `src/infer.py`
+## Batch inference - `src/infer.py`
 
 Loads `models/fraud_model.joblib` and scores transactions without retraining.
 
@@ -158,8 +158,8 @@ Loads `models/fraud_model.joblib` and scores transactions without retraining.
 
 | Input type | Recommended mode |
 |---|---|
-| Parquet / CSV file (full history available) | default — dest-history **enabled** |
-| Real-time single record (no prior context) | `--record` — dest-history **auto-disabled** |
+| Parquet / CSV file (full history available) | default - dest-history **enabled** |
+| Real-time single record (no prior context) | `--record` - dest-history **auto-disabled** |
 | Explicit streaming / no-context batch | add `--no-dest-history` |
 
 ### Commands
@@ -170,7 +170,7 @@ python src/infer.py \
   --input data/processed/transactions_clean.parquet \
   --test-only
 
-# Quick sanity check — first N rows of the test split
+# Quick sanity check - first N rows of the test split
 python src/infer.py \
   --input data/processed/transactions_clean.parquet \
   --test-only --nrows 100000

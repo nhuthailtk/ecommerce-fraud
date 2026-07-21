@@ -206,7 +206,7 @@ def main() -> None:
             invalid_sections.append(table.to_markdown(index=False) + "\n")
 
     log = [
-        "# Cleaning Report — PaySim E-Commerce Fraud Detection\n",
+        "# Cleaning Report - PaySim E-Commerce Fraud Detection\n",
         "## Scope\n",
         "- Input: `data/processed/transactions_context.parquet`.\n",
         "- Cleaning is conservative: validate and document, remove only exact duplicates or negative amounts if found.\n",

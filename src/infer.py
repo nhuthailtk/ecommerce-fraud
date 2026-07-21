@@ -15,7 +15,7 @@ Usage examples
 # Test on the held-out step range stored inside the bundle:
     python src/infer.py --input data/processed/transactions_clean.parquet --test-only
 
-# Quick sanity check — score only N rows:
+# Quick sanity check - score only N rows:
     python src/infer.py --input data/processed/transactions_clean.parquet --nrows 50000
 
 # Random sample fraction:
@@ -136,7 +136,7 @@ def apply_slice(df: pd.DataFrame, args: argparse.Namespace, bundle: dict) -> pd.
         lo = split.get("test_step_min")
         hi = split.get("test_step_max")
         if lo is None or hi is None:
-            raise ValueError("Bundle has no split_info.test_step_min/max — cannot use --test-only.")
+            raise ValueError("Bundle has no split_info.test_step_min/max - cannot use --test-only.")
         mask = (df["step"] >= lo) & (df["step"] <= hi)
         df = df[mask].reset_index(drop=True)
         print(f"[infer] --test-only: step [{lo}, {hi}] → {len(df):,} rows", file=sys.stderr)
@@ -317,7 +317,7 @@ def main() -> None:
     if use_dest_history and args.record:
         # Single-record JSON: dest history is meaningless; default to zeros.
         use_dest_history = False
-        print("[infer] single record — dest-history disabled automatically", file=sys.stderr)
+        print("[infer] single record - dest-history disabled automatically", file=sys.stderr)
 
     scored = score(df, bundle, use_dest_history=use_dest_history)
     print_eval_metrics(scored, bundle)

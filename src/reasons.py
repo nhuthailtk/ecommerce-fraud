@@ -1,12 +1,12 @@
-"""Reason codes — transparent, rule-based "why was this flagged?".
+"""Reason codes - transparent, rule-based "why was this flagged?".
 
 We deliberately avoid a black-box attribution (SHAP) here: for a fraud-review
-analyst — and for a regulator — a short, human-readable list of the concrete
+analyst - and for a regulator - a short, human-readable list of the concrete
 risk signals present on a transaction is more actionable and more defensible
 than a bar of feature weights. Each rule maps a known risk feature to a plain
 phrase; `reason_codes` returns the top signals present, most severe first.
 
-These are explanatory signals, not the model itself — the ensemble score is
+These are explanatory signals, not the model itself - the ensemble score is
 still the decision driver. Reason codes explain; they do not decide.
 """
 from __future__ import annotations
@@ -61,4 +61,4 @@ def reason_codes(row, top: int = 3) -> list[str]:
 
 def reason_series(df: pd.DataFrame, top: int = 3, sep: str = " · ") -> pd.Series:
     """Vectorized-ish helper: a Series of joined reason strings for a frame."""
-    return df.apply(lambda r: sep.join(reason_codes(r, top)) or "—", axis=1)
+    return df.apply(lambda r: sep.join(reason_codes(r, top)) or "-", axis=1)

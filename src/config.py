@@ -26,7 +26,7 @@ PAYSIM_CSV = DATA_RAW / "PS_20174392719_1491204439457_log.csv"
 SEED = 42
 
 # ----------------------------------------------------------------------------
-# Active PaySim schema — the columns the real Kaggle CSV must contain.
+# Active PaySim schema - the columns the real Kaggle CSV must contain.
 # We use this to validate the real file and generate a schema-identical
 # stand-in only if the CSV is unavailable.
 # ----------------------------------------------------------------------------
@@ -50,7 +50,7 @@ TARGET = "isFraud"
 FRAUD_TYPES = ["TRANSFER", "CASH_OUT"]
 
 # ----------------------------------------------------------------------------
-# Business-cost assumptions  (Module 5 — cost-based threshold selection)
+# Business-cost assumptions  (Module 5 - cost-based threshold selection)
 # These are ASSUMPTIONS the team must justify in the report; tune them here so
 # threshold selection and the report never drift apart.
 # ----------------------------------------------------------------------------

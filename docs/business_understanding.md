@@ -1,4 +1,4 @@
-# Business Understanding — PaySim Online Payments Fraud Detection
+# Business Understanding - PaySim Online Payments Fraud Detection
 
 ## Business Problem
 

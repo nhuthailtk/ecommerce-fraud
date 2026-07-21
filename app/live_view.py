@@ -1,4 +1,4 @@
-"""Live Feed page — a simulated stream of incoming transactions that grows over
+"""Live Feed page - a simulated stream of incoming transactions that grows over
 time. Each tick generates fresh transactions, scores them with all 3 models, and
 appends them to a running queue.
 """
@@ -13,8 +13,8 @@ from simulate import DEFAULT_POOL_SIZE, decision_timeline, generate_pool, score_
 _MAX_KEEP = 5000            # cap accumulated rows to bound memory
 _SEED_BASE = 20240          # varied per pool regeneration for fresh data
 _DECISION_COLORS = {"allow": "#e8f5e9", "review": "#fff8e1", "block": "#ffebee"}
-_REVIEW_COLOR = "#F6C445"   # yellow — review
-_BLOCK_COLOR = "#E5484D"    # red — block
+_REVIEW_COLOR = "#F6C445"   # yellow - review
+_BLOCK_COLOR = "#E5484D"    # red - block
 
 
 def _ensure_state():
@@ -91,7 +91,7 @@ def _render(bundle: dict):
     # stacked per arrival bucket.
     bin_size = st.slider("Timeline bucket (transactions)", 5, 100, 25, step=5, key="live_bin")
     timeline = decision_timeline(stream, bin_size)
-    st.caption("Flagged transactions over time — **review** (yellow) · **block** (red)")
+    st.caption("Flagged transactions over time - **review** (yellow) · **block** (red)")
     st.bar_chart(
         timeline, height=220,
         color=[_REVIEW_COLOR, _BLOCK_COLOR],   # column order: ['review', 'block']
@@ -105,7 +105,7 @@ def _render(bundle: dict):
     score_cols = [f"{k}_score" for k in keys]
     cols = ["arrival", "agg_decision", *score_cols, "type", "amount",
             "num_failed_payment_attempts", "ip_billing_distance_km", "high_risk_country", "isFraud"]
-    st.subheader(f"Incoming — showing {min(len(view), 200):,} of {len(stream):,} received")
+    st.subheader(f"Incoming - showing {min(len(view), 200):,} of {len(stream):,} received")
     styler = (
         view[cols].head(200).style
         .format({**{c: "{:.3f}" for c in score_cols},

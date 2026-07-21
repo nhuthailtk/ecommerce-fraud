@@ -7,7 +7,7 @@ uvicorn in a background **thread** bound to 127.0.0.1:8000.
 
 This is safe because `src/api_client.py` calls the API **server-side** (from the
 Streamlit Python process), so it reaches the API over localhost *inside the
-container* — the browser never needs port 8000 exposed. Locally, if you already
+container* - the browser never needs port 8000 exposed. Locally, if you already
 run `uvicorn api.main:app` yourself, we detect the open port and don't start a
 second copy.
 """
@@ -20,7 +20,7 @@ import time
 
 import streamlit as st
 
-import app_common  # noqa: F401  — wires src/ onto sys.path
+import app_common  # noqa: F401  - wires src/ onto sys.path
 
 _HOST = "127.0.0.1"
 _PORT = 8000

@@ -1,4 +1,4 @@
-"""Cost & ROI page — reframe fraud detection as a money decision.
+"""Cost & ROI page - reframe fraud detection as a money decision.
 
 Fraud detection is a cost-optimization problem: every decision trades the cost
 of a missed fraud (≈ the transaction amount) against the cost of a false alarm
@@ -31,7 +31,7 @@ def _confusion_df(r: costs.CostResult) -> pd.DataFrame:
 def render():
     st.title("💰 Cost & ROI")
     st.caption("Fraud detection is a **cost-optimization** problem. Every threshold trades "
-               "missed-fraud loss against false-alarm friction — this page prices that trade in €.")
+               "missed-fraud loss against false-alarm friction - this page prices that trade in €.")
     dataset_badge("test")
 
     df, keys = get_scored_context()
@@ -41,7 +41,7 @@ def render():
     # ---- Editable cost matrix (defaults come from config.py) ---------------- #
     with st.expander("⚙️ Cost assumptions (edit for sensitivity analysis)", expanded=False):
         st.caption("Defaults are the team's assumptions in `config.py`. Change them to see how "
-                   "the business case shifts — this is the sensitivity analysis your report needs.")
+                   "the business case shifts - this is the sensitivity analysis your report needs.")
         cc = st.columns(3)
         c_fn = cc[0].number_input(
             f"Missed-fraud cost  (× amount)", value=costs.DEFAULT_FN, step=0.1, min_value=0.0,
@@ -73,7 +73,7 @@ def render():
     sel = costs.cost_breakdown(y, _flagged_for(choice), amount, **kw)
 
     label = "ensemble" if choice == ENSEMBLE_LABEL else choice
-    st.subheader(f"{choice} — business impact")
+    st.subheader(f"{choice} - business impact")
     st.caption(f"On {sel.n:,} transactions carrying {_money(sel.fraud_exposure)} of fraud exposure "
                f"({sel.n_fraud} fraudulent).")
     k = st.columns(4)
@@ -87,7 +87,7 @@ def render():
                 help="Net savings per € spent on false alarms + manual review.")
 
     # ---- Baseline comparison bar (selected model) -------------------------- #
-    st.markdown(f"**Total cost vs. naive strategies** ({label}) — lower is better")
+    st.markdown(f"**Total cost vs. naive strategies** ({label}) - lower is better")
     comp = pd.DataFrame({
         "Strategy": ["Do nothing\n(allow all)", "Review everything\n(no ML)", f"{label}"],
         "Total cost": [sel.do_nothing_cost, sel.review_all_cost, sel.model_cost],
@@ -109,7 +109,7 @@ def render():
         st.dataframe(cm.style.format("{:,}"), use_container_width=True)
         breakdown = pd.DataFrame({
             "Component": ["Missed-fraud loss (FN)", "False-alarm cost (FP)", "Manual-review labour",
-                          "— Total model cost", "Do-nothing baseline", "Net savings"],
+                          "- Total model cost", "Do-nothing baseline", "Net savings"],
             "Amount": [-sel.fn_loss, -sel.fp_cost, -sel.review_cost,
                        -sel.model_cost, -sel.do_nothing_cost, sel.net_savings],
         })
@@ -123,7 +123,7 @@ def render():
     # ---- All models vs. ensemble side by side ------------------------------ #
     st.subheader("All models vs. ensemble")
     st.caption("Every model priced on the same cost assumptions. The max-risk **ensemble maximizes "
-               "recall** (it flags if *any* model flags) and is robust when one model degrades — but "
+               "recall** (it flags if *any* model flags) and is robust when one model degrades - but "
                "that union also inherits every model's false alarms, so its precision (and sometimes "
                "net savings) can trail the best single model on clean data. Read the trade-off, don't "
                "assume a winner.")

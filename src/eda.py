@@ -91,7 +91,7 @@ def main() -> None:
     sample_fraud = int(df["isFraud"].sum())
 
     lines = [
-        "# EDA Summary — PaySim E-Commerce Fraud Detection\n",
+        "# EDA Summary - PaySim E-Commerce Fraud Detection\n",
         "## Dataset Snapshot\n",
         f"- Rows: **{n:,}**.\n",
         f"- Fraud rows: **{fraud:,}** (**{fraud_rate:.4%}**).\n",

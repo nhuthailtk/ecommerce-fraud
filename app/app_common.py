@@ -36,7 +36,7 @@ def model_keys(bundle: dict) -> list[str]:
 
 
 # --------------------------------------------------------------------------- #
-# Shared display helpers — one currency formatter and one dataset badge so
+# Shared display helpers - one currency formatter and one dataset badge so
 # every page speaks the same language (consistency across the demo).
 # --------------------------------------------------------------------------- #
 CURRENCY = "€"
@@ -63,9 +63,9 @@ def dataset_badge(kind: str) -> None:
     """
     import streamlit as st
     notes = {
-        "test": "📁 **Data:** held-out temporal test split — transactions unseen at training time.",
-        "full": "📁 **Data:** full labelled population — descriptive analytics across all history.",
-        "sample": "📁 **Data:** 2,000-transaction preview batch — for interactive triage.",
+        "test": "📁 **Data:** held-out temporal test split - transactions unseen at training time.",
+        "full": "📁 **Data:** full labelled population - descriptive analytics across all history.",
+        "sample": "📁 **Data:** 2,000-transaction preview batch - for interactive triage.",
         "live": "📁 **Data:** freshly simulated real-time stream.",
     }
     st.caption(notes.get(kind, ""))
@@ -83,7 +83,7 @@ def get_scored_context():
     frame, so we report on the temporal test split only (steps ≥
     `split_info.test_step_min`, unseen at fit time). Enrichment runs on the FULL
     frame first so the causal dest-history features for test rows correctly see
-    the prior history, then we filter — matching how the model was trained.
+    the prior history, then we filter - matching how the model was trained.
 
     Returns (df, keys): per-model `*_score` columns, `agg_decision`, a `risk` =
     max-across-models score, plus the original `isFraud` and `amount`.

@@ -21,4 +21,4 @@ Retraining trigger: any monitored PSI ≥ **0.25**.
 ## Retraining decision
 
 - Natural split: **no retraining needed** (all < 0.25).
-- Simulated fraud campaign: **RETRAIN** — drift on: ip_billing_distance_km, num_failed_payment_attempts, PREDICTION_SCORE_xgb.
+- Simulated fraud campaign: **RETRAIN** - drift on: ip_billing_distance_km, num_failed_payment_attempts, PREDICTION_SCORE_xgb.

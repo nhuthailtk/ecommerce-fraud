@@ -206,7 +206,7 @@ def write_report(results: pd.DataFrame, best: dict[str, object], split_info: dic
         "test_precision", "test_recall", "test_f1", "test_loss_avoided_pct",
     ]
     lines = [
-        "# Model Development — PaySim Fraud Detection\n",
+        "# Model Development - PaySim Fraud Detection\n",
         "## Methodology\n",
         "- `prepare_feature_frame(full_df)` runs once before split, preserving causal `nameDest` history across train/validation/test.\n",
         "- `FeatureTransformer` fits frequency maps, imputer, scaler, and feature schema on train only.\n",
@@ -293,7 +293,7 @@ def main() -> None:
             X_val = subset_features(X_val_src, group)
             X_test = subset_features(X_test_src, group)
 
-            # Clone a fresh, unfitted estimator per (model, feature_group) —
+            # Clone a fresh, unfitted estimator per (model, feature_group) -
             # reusing spec["model"] directly would let each group's .fit()
             # overwrite the previous group's fitted state on the same object.
             model = clone(spec["model"])

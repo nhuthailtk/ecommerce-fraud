@@ -1,4 +1,4 @@
-# EDA Summary — PaySim E-Commerce Fraud Detection
+# EDA Summary - PaySim E-Commerce Fraud Detection
 
 ## Dataset Snapshot
 
