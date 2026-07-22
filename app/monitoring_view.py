@@ -1,8 +1,8 @@
-"""Monitoring page - drift dashboard.
+"""Monitoring page — drift dashboard.
 
 Two tabs:
-  📄 Reports      - the CLI-generated drift_report.md + Evidently HTML (historical).
-  🔴 Live Monitor - a self-contained, scenario-driven live drift monitor. It
+  📄 Reports      — the CLI-generated drift_report.md + Evidently HTML (historical).
+  🔴 Live Monitor — a self-contained, scenario-driven live drift monitor. It
      generates transactions per tick (Normal / Fraud campaign / Sudden spike),
      freezes the first N as a reference baseline, and measures rolling PSI on
      each feature and each model's prediction score, with a top-right bell alert
@@ -27,15 +27,15 @@ from ensemble import window_performance
 from retrain import retrain_ensemble
 from alerting import build_alert_payload, incident_report_md, send_webhook
 
-_RETRAIN_SAMPLE_N = 60000   # labelled rows for an in-app retrain - large enough
+_RETRAIN_SAMPLE_N = 60000   # labelled rows for an in-app retrain — large enough
                             # to carry ~90 fraud (fewer starves the refit and it
                             # regresses vs the deployed model)
 _TEST_N = 60000             # frozen held-out test set for version comparison. Large
-                            # so it carries ~90 fraud - a small set (~6 fraud) makes
+                            # so it carries ~90 fraud — a small set (~6 fraud) makes
                             # AUC-PR saturate at 1.0 and stop discriminating versions.
 _PERF_COLORS = ["#2E7D32", "#1565C0", "#8E24AA", "#EF6C00"]  # precision/recall/f1/flagged
 
-# (bg, top-border, text) per band - for the PSI snapshot tiles.
+# (bg, top-border, text) per band — for the PSI snapshot tiles.
 _CARD_COLORS = {
     "stable": ("#e8f5e9", "#2E7D32", "#1B5E20"),
     "moderate": ("#fff8e1", "#F6A445", "#8A6D00"),
@@ -44,8 +44,8 @@ _CARD_COLORS = {
 _REPORT_MD = drift.REPORTS / "drift_report.md"
 _REPORT_HTML = drift.REPORTS / "evidently_drift.html"
 
-_REF_COLOR = "#6C8EBF"   # blue  - reference baseline
-_CUR_COLOR = "#F6A445"   # orange - current window
+_REF_COLOR = "#6C8EBF"   # blue  — reference baseline
+_CUR_COLOR = "#F6A445"   # orange — current window
 
 _SEED_BASE = 77000
 BASELINE_N = 300     # transactions frozen as the reference baseline
@@ -72,7 +72,7 @@ def _render_reports():
         st.caption(f"Evidently report · last written {_mtime(_REPORT_HTML)}")
         components.html(_REPORT_HTML.read_text(encoding="utf-8"), height=800, scrolling=True)
     else:
-        st.info("No `evidently_drift.html` yet - generated alongside the report by `drift.py`.")
+        st.info("No `evidently_drift.html` yet — generated alongside the report by `drift.py`.")
 
 
 # --------------------------------------------------------------------------- #
@@ -80,7 +80,7 @@ def _render_reports():
 # --------------------------------------------------------------------------- #
 def _default_webhook() -> str:
     """Default alert webhook from Streamlit secrets or the ALERT_WEBHOOK_URL env
-    var. Kept out of source/git - configure it in .streamlit/secrets.toml."""
+    var. Kept out of source/git — configure it in .streamlit/secrets.toml."""
     try:
         v = st.secrets.get("alert_webhook_url", "")
         if v:
@@ -105,7 +105,7 @@ def _ensure_mon_state():
     ss.setdefault("mon_bundle", None)     # in-session retrained bundle override
     ss.setdefault("mon_versions", [])     # model version registry (audit log)
     ss.setdefault("mon_test_set", None)   # frozen labelled test set for comparison
-    ss.setdefault("mon_retrain_count", 0)  # monotonic - varies retrain data each time
+    ss.setdefault("mon_retrain_count", 0)  # monotonic — varies retrain data each time
 
 
 def _reset_mon():
@@ -165,7 +165,7 @@ def _advance_mon(bundle: dict, k: int, scenario: str):
         now_triggered = {name for name, v in psi.items() if v >= drift.RETRAIN_PSI}
         new = now_triggered - set(ss.mon_triggered)
         if new:
-            st.toast("⚠️ Retrain needed - drift on " + ", ".join(sorted(new)), icon="🚨")
+            st.toast("⚠️ Retrain needed — drift on " + ", ".join(sorted(new)), icon="🚨")
             _maybe_send_alert(sorted(new), psi)
         ss.mon_triggered = sorted(now_triggered)
 
@@ -177,7 +177,7 @@ def _maybe_send_alert(new_signals, psi):
         payload = build_alert_payload(new_signals, psi, received=ss.mon_received,
                                       when=datetime.now().isoformat(timespec="seconds"))
         ok, msg = send_webhook(url, payload)
-        st.toast(("📤 Alert sent" if ok else f"⚠️ Alert failed - {msg}"), icon="📤" if ok else "⚠️")
+        st.toast(("📤 Alert sent" if ok else f"⚠️ Alert failed — {msg}"), icon="📤" if ok else "⚠️")
 
 
 def _register_deployed_version():
@@ -186,7 +186,7 @@ def _register_deployed_version():
     if not ss.mon_versions:
         ss.mon_versions.append({
             "version": 1, "bundle": get_ensemble(), "when": "deployed",
-            "scenario": "-", "rows": None, "fraud": None, "triggers": [], "metrics": None,
+            "scenario": "—", "rows": None, "fraud": None, "triggers": [], "metrics": None,
         })
 
 
@@ -223,7 +223,7 @@ def _do_retrain(scenario: str):
     })
 
     # Reset the live stream so a FRESH baseline is captured and the scenarios can
-    # drift (and alert) again - now scored by the retrained model. The retrained
+    # drift (and alert) again — now scored by the retrained model. The retrained
     # bundle, version registry and frozen test set are preserved.
     for k in ("mon_stream", "mon_baseline", "mon_received", "mon_pool", "mon_cursor", "mon_gen"):
         ss.pop(k, None)
@@ -231,7 +231,7 @@ def _do_retrain(scenario: str):
     _ensure_mon_state()
     st.toast(f"✅ Retrained → Model v{ss.mon_versions[-1]['version']} on fresh data "
              f"({new_bundle['retrain_rows']:,} rows, {new_bundle['retrain_fraud']} fraud). "
-             "Monitor reset - run a scenario to test it against fresh drift.", icon="✅")
+             "Monitor reset — run a scenario to test it against fresh drift.", icon="✅")
 
 
 def _render_bell(names: list[str], latest_psi: dict | None = None):
@@ -241,12 +241,12 @@ def _render_bell(names: list[str], latest_psi: dict | None = None):
     label = f"🔔 {count}" if count else "🔔"
     with st.popover(label, use_container_width=True, help="Drift / retrain alerts"):
         if count:
-            st.markdown(f"**⚠️ Retrain recommended** - {count} signal(s) at PSI ≥ {drift.RETRAIN_PSI}:")
+            st.markdown(f"**⚠️ Retrain recommended** — {count} signal(s) at PSI ≥ {drift.RETRAIN_PSI}:")
             for n in names:
                 v = (latest_psi or {}).get(n)
-                st.markdown(f"- `{n}`" + (f" - PSI **{v:.3f}**" if isinstance(v, (int, float)) else ""))
+                st.markdown(f"- `{n}`" + (f" — PSI **{v:.3f}**" if isinstance(v, (int, float)) else ""))
         else:
-            st.success("No drift alerts - all signals below threshold.")
+            st.success("No drift alerts — all signals below threshold.")
 
 
 def _pretty_signal(sig: str) -> str:
@@ -294,7 +294,7 @@ def _render_dashboard(bundle: dict):
 
     # Drift snapshot as colored tiles, at the top of the dashboard.
     latest = ss.mon_psi_history[-1]
-    st.markdown("**Drift snapshot** - PSI per signal (latest window)")
+    st.markdown("**Drift snapshot** — PSI per signal (latest window)")
     _render_psi_cards(latest)
     st.caption(f"Reference: first {BASELINE_N} txns (frozen) · Current: last {WINDOW_N} txns · "
                f"trigger at PSI ≥ {drift.RETRAIN_PSI}.")
@@ -305,9 +305,9 @@ def _render_dashboard(bundle: dict):
     pred_cols = [c for c in hist.columns if c.startswith("PREDICTION_SCORE_")]
     hist["combined"] = hist[pred_cols].mean(axis=1)
 
-    st.markdown("**Feature drift - PSI over transactions received**")
+    st.markdown("**Feature drift — PSI over transactions received**")
     st.line_chart(hist[feats + ["threshold"]], height=240)
-    st.markdown("**Prediction-score drift - per model + combined**")
+    st.markdown("**Prediction-score drift — per model + combined**")
     st.line_chart(hist[pred_cols + ["combined", "threshold"]], height=240)
 
     if ss.mon_perf_history:
@@ -317,7 +317,7 @@ def _render_dashboard(bundle: dict):
         st.caption("Precision falls / flagged-rate rises as drift pushes legitimate traffic over the "
                    "threshold. Fraud is rare per window, so recall is noisier.")
 
-    # Reference vs current distribution per feature - explains each PSI value.
+    # Reference vs current distribution per feature — explains each PSI value.
     st.markdown("**Reference vs current distribution per feature** "
                 "(blue = reference baseline · orange = current window)")
     current = ss.mon_stream.iloc[-WINDOW_N:]
@@ -363,9 +363,9 @@ def _render_version_badge():
         v = ss.mon_versions[-1]
         st.success(f"🟢 Serving **Model v{v['version']}** · retrained **{v['when']}** · "
                    f"{v['rows']:,} rows ({v['fraud']} fraud) · scenario: *{v['scenario']}* "
-                   "- press **Reset** to restore the deployed model.")
+                   "— press **Reset** to restore the deployed model.")
     else:
-        st.info("⚪ Serving **Model v1 (deployed)** - the on-disk ensemble bundle.")
+        st.info("⚪ Serving **Model v1 (deployed)** — the on-disk ensemble bundle.")
 
 
 def _version_table_row(v: dict, test_set) -> dict:
@@ -394,7 +394,7 @@ def _render_version_history():
         fraud_n = int(ss.mon_test_set["isFraud"].sum())
         st.caption(f"All versions evaluated on the **same frozen test set** "
                    f"({len(ss.mon_test_set):,} transactions · {fraud_n} fraud, current distribution). "
-                   "**AUC-PR** (ranking quality, threshold-independent) is the reliable comparison - "
+                   "**AUC-PR** (ranking quality, threshold-independent) is the reliable comparison — "
                    "higher after retrain = the model ranks fraud better on the drifted data. "
                    "Precision/recall/F1 are shown too but are noisy here because fraud is rare (~0.15%).")
         st.dataframe(

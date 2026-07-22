@@ -1,4 +1,4 @@
-"""Real-time scoring API (Module 6) - FastAPI.
+"""Real-time scoring API (Module 6) — FastAPI.
 
 Scores a single transaction with ALL deployed models (Logistic Regression,
 Random Forest, XGBoost) independently and returns each model's fraud probability

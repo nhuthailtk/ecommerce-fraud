@@ -401,7 +401,7 @@ def write_feature_report(
     ])
 
     report = [
-        "# Feature Engineering - PaySim Fraud Detection\n",
+        "# Feature Engineering — PaySim Fraud Detection\n",
         "## Source / Split\n",
         f"- Source: `data/processed/transactions_clean.parquet` with **{len(df):,} rows**.\n",
         f"- Train/validation/test rows: **{len(train_idx):,} / {len(val_idx):,} / {len(test_idx):,}**.\n",

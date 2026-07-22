@@ -1,4 +1,4 @@
-"""Review Queue page - score the batch with all 3 models, triage by max-risk."""
+"""Review Queue page — score the batch with all 3 models, triage by max-risk."""
 from __future__ import annotations
 
 import pandas as pd
@@ -22,7 +22,7 @@ def _load_and_score():
     scores = score_batch(enriched, bundle).reset_index(drop=True)
     df = pd.concat([df.reset_index(drop=True), scores], axis=1)
     df["max_score"] = df[[f"{k}_score" for k in keys]].max(axis=1)
-    # Transparent "why flagged" signals - computed on the enriched frame so
+    # Transparent "why flagged" signals — computed on the enriched frame so
     # engineered features (ip distance, night, account age) are available.
     df["why_flagged"] = reason_series(enriched.reset_index(drop=True))
     return df, keys
@@ -73,7 +73,7 @@ def render():
             "ip_billing_distance_km", "high_risk_country", "hour_of_day", "isFraud"]
     cols = [c for c in cols if c in view.columns]
 
-    st.subheader(f"Queue - {len(view):,} transactions")
+    st.subheader(f"Queue — {len(view):,} transactions")
     styler = (
         view[cols].style
         .format({**{c: "{:.3f}" for c in score_cols},
@@ -89,4 +89,4 @@ def render():
     )
     st.caption("`why flagged` lists the concrete risk signals an analyst would act on; per-model "
                "scores are shown side by side and `agg_decision` is the max-risk verdict. "
-               "`isFraud` is for demo evaluation only - unavailable at scoring time.")
+               "`isFraud` is for demo evaluation only — unavailable at scoring time.")

@@ -1,4 +1,4 @@
-"""Segment analytics - where does fraud concentrate?
+"""Segment analytics — where does fraud concentrate?
 
 Descriptive business intelligence on the full labelled population: fraud rate
 and € exposure by transaction type, hour of day, and amount band, plus a
@@ -13,13 +13,13 @@ import numpy as np
 import pandas as pd
 import streamlit as st
 
-from app_common import CONTEXT_PARQUET, dataset_badge, fmt_money as _money
+from app_common import context_is_sample, dataset_badge, fmt_money as _money, resolve_context_path
 
 
 @st.cache_data
 def _load():
-    df = pd.read_parquet(CONTEXT_PARQUET)
-    return df
+    path, _ = resolve_context_path()
+    return pd.read_parquet(path)
 
 
 def _rate_by(df: pd.DataFrame, col: str) -> pd.DataFrame:
@@ -57,9 +57,9 @@ def _lift_table(df: pd.DataFrame, flags: dict[str, str]) -> pd.DataFrame:
 
 def render():
     st.title("🔎 Segment Analytics")
-    st.caption("Where fraud concentrates across the business - the descriptive picture behind the "
+    st.caption("Where fraud concentrates across the business — the descriptive picture behind the "
                "model's features.")
-    dataset_badge("full")
+    dataset_badge("sample" if context_is_sample() else "full")
 
     df = _load()
     base_rate = df["isFraud"].mean()
@@ -75,7 +75,7 @@ def render():
 
     # ---- By transaction type ---------------------------------------------- #
     st.subheader("By transaction type")
-    st.caption("In PaySim, fraud occurs only in TRANSFER and CASH_OUT - the model exploits this.")
+    st.caption("In PaySim, fraud occurs only in TRANSFER and CASH_OUT — the model exploits this.")
     by_type = _rate_by(df, "type")
     c1, c2 = st.columns(2)
     with c1:
@@ -158,4 +158,4 @@ def render():
                      alt.Tooltip("fraud_amount:Q", format=",.0f")],
         ).properties(height=240)
         st.altair_chart(chart, use_container_width=True)
-        st.caption("Fraud skews toward higher-value transactions - where the € loss is largest.")
+        st.caption("Fraud skews toward higher-value transactions — where the € loss is largest.")

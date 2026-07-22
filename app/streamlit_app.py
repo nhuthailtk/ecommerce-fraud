@@ -1,15 +1,15 @@
-"""Fraud-detection application (Module 6) - multipage Streamlit.
+"""Fraud-detection application (Module 6) — multipage Streamlit.
 
 Pages:
-  🛡️ Review Queue - all 3 models score each transaction; triage by max-risk.
-  📈 Monitoring   - drift dashboard (Reports + Live tabs), per-model prediction drift.
+  🛡️ Review Queue — all 3 models score each transaction; triage by max-risk.
+  📈 Monitoring   — drift dashboard (Reports + Live tabs), per-model prediction drift.
 
 Run:
     streamlit run app/streamlit_app.py
 """
 import streamlit as st
 
-# app_common wires sys.path (src/, monitoring/) - import it BEFORE the views so
+# app_common wires sys.path (src/, monitoring/) — import it BEFORE the views so
 # their module-level `from ensemble/config/drift import ...` resolve.
 import app_common  # noqa: F401,E402
 import embedded_api  # noqa: E402
@@ -41,7 +41,7 @@ if _LOGO.exists():
 st.sidebar.markdown(
     """
 #### E-Commerce Real-Time Payment Fraud Detection
-*Business Analytics - Master's Capstone Project*
+*Business Analytics — Master's Capstone Project*
 """
 )
 st.sidebar.divider()

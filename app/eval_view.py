@@ -1,4 +1,4 @@
-"""Model evaluation page - how well do the models actually discriminate fraud?
+"""Model evaluation page — how well do the models actually discriminate fraud?
 
 Standard analytics evaluation on the labelled context: a per-model scoreboard
 (AUC-PR, ROC-AUC, precision/recall/F1 at each model's deployed threshold), ROC
@@ -15,7 +15,7 @@ import streamlit as st
 from sklearn.metrics import (average_precision_score, precision_recall_curve,
                              precision_recall_fscore_support, roc_auc_score, roc_curve)
 
-from app_common import dataset_badge, get_ensemble, get_scored_context
+from app_common import dataset_badge, get_ensemble, get_scored_context, sample_mode_note
 
 _PALETTE = ["#1565C0", "#2E7D32", "#8E24AA", "#EF6C00", "#C62828"]
 
@@ -74,14 +74,15 @@ def render():
     st.title("📊 Model Evaluation")
     st.caption("How well the models separate fraud from legit, independent of the operating threshold.")
     dataset_badge("test")
+    sample_mode_note()
 
     bundle = get_ensemble()
     df, keys = get_scored_context()
     n_fraud = int(df["isFraud"].sum())
-    st.caption(f"Evaluated on the **held-out temporal test split** - {len(df):,} transactions unseen "
+    st.caption(f"Evaluated on the **held-out temporal test split** — {len(df):,} transactions unseen "
                f"at training time · {n_fraud} fraudulent ({n_fraud/len(df):.3%} prevalence, a hard, "
                f"highly-imbalanced problem).")
-    st.info("Reported on unseen data (later time steps than training) - not the training set. On the "
+    st.info("Reported on unseen data (later time steps than training) — not the training set. On the "
             "current **synthetic** stand-in dataset the injected fraud carries strong, cleanly "
             "separable signals, so the tree models score near-perfectly; the linear baseline's lower "
             "AUC-PR shows the problem is non-trivial. Drop the real Kaggle PaySim CSV in `data/raw/` "
@@ -138,7 +139,7 @@ def render():
         tp, fn = cm.loc["Actual fraud"]
         st.caption(f"Catches **{tp}/{tp+fn}** frauds ({tp/(tp+fn):.0%} recall) at the deployed thresholds.")
     with c4:
-        st.markdown("**Cumulative gains - fraud captured vs. volume reviewed**")
+        st.markdown("**Cumulative gains — fraud captured vs. volume reviewed**")
         gains = _gains_frame(df)
         chart = alt.Chart(gains).mark_line().encode(
             x=alt.X("reviewed:Q", title="Fraction of transactions reviewed", axis=alt.Axis(format="%")),

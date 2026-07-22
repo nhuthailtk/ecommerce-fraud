@@ -1,8 +1,8 @@
-"""Outbound drift/retrain alerts - generic incoming webhook + incident report.
+"""Outbound drift/retrain alerts — generic incoming webhook + incident report.
 
 Nothing is sent unless the caller supplies a URL. The payload uses a top-level
 `text` field so it works with Slack and Discord incoming webhooks as well as any
-generic JSON endpoint. Uses only the stdlib (urllib) - no extra dependency.
+generic JSON endpoint. Uses only the stdlib (urllib) — no extra dependency.
 """
 from __future__ import annotations
 
@@ -17,7 +17,7 @@ def build_alert_payload(signals, psi: dict | None = None, received=None, when=No
         f"• {s}: PSI {psi[s]:.3f}" if isinstance(psi.get(s), (int, float)) else f"• {s}"
         for s in signals
     )
-    text = ("🚨 *Fraud model - retrain recommended*\n"
+    text = ("🚨 *Fraud model — retrain recommended*\n"
             f"{len(list(signals))} signal(s) exceeded the drift threshold:\n{bullets}")
     if received is not None:
         text += f"\n(after {received:,} transactions)"
@@ -34,7 +34,7 @@ def incident_report_md(signals, psi: dict | None = None, received=None, when=Non
     """A downloadable Markdown incident report."""
     psi = psi or {}
     lines = [
-        "# Drift Incident - Retrain Recommended",
+        "# Drift Incident — Retrain Recommended",
         "",
         f"- When: {when or 'n/a'}",
         f"- Transactions processed: {received:,}" if received is not None else "- Transactions processed: n/a",
@@ -60,5 +60,5 @@ def send_webhook(url: str, payload: dict, timeout: float = 5.0) -> tuple[bool, s
     try:
         with urllib.request.urlopen(req, timeout=timeout) as resp:
             return True, f"Delivered (HTTP {resp.status})."
-    except Exception as exc:  # network/DNS/HTTP errors - surface, never crash the app
+    except Exception as exc:  # network/DNS/HTTP errors — surface, never crash the app
         return False, f"{type(exc).__name__}: {exc}"

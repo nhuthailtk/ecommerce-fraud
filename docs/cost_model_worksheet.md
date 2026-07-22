@@ -34,7 +34,7 @@ cũng phải cùng đơn vị tiền tệ đó. Chốt 1 đơn vị (vd USD) cho
 
 ---
 
-## 1. `COST_MANUAL_REVIEW` - làm ĐẦU TIÊN (mỏ neo, dễ nhất)
+## 1. `COST_MANUAL_REVIEW` — làm ĐẦU TIÊN (mỏ neo, dễ nhất)
 
 **Ý nghĩa:** chi phí để 1 analyst xử lý 1 giao dịch bị gắn cờ.
 
@@ -57,7 +57,7 @@ lương giờ có tải đầy đủ = lương cơ bản/giờ × hệ số over
 
 ---
 
-## 2. `COST_FALSE_NEGATIVE` - hệ số nhân với `amount`
+## 2. `COST_FALSE_NEGATIVE` — hệ số nhân với `amount`
 
 **Ý nghĩa:** bỏ sót 1 fraud mất bao nhiêu so với số tiền giao dịch.
 Vì công thức đã nhân với `amount`, hệ số này = **phần trăm không thu hồi được**
@@ -75,7 +75,7 @@ COST_FALSE_NEGATIVE = (1 − recovery_rate) + (phí_cố_định_mỗi_vụ / am
 |---|---|---|---|
 | `recovery_rate` | Tỉ lệ thu hồi cho **transfer/push-payment fraud** (giống PaySim: tiền đã chuyển đi) | UK Finance "Annual Fraud Report" (APP scam recovery), FBI IC3 Report, báo cáo NHNN/ngân hàng nếu có | `___` |
 | `fee` | Phí chargeback/điều tra mỗi vụ (nếu tính) | Biểu phí Visa/Mastercard chargeback ($15–100), Chargebacks911 | `___` |
-| `avg_fraud_amt` | Số tiền fraud trung bình - **lấy TỪ DATA của bạn** | `docs/eda_summary.md` / tự tính trên PaySim | `___` |
+| `avg_fraud_amt` | Số tiền fraud trung bình — **lấy TỪ DATA của bạn** | `docs/eda_summary.md` / tự tính trên PaySim | `___` |
 
 **Ghép số:** `COST_FALSE_NEGATIVE = (1 − recovery_rate) + fee/avg_fraud_amt = ___`
 
@@ -84,7 +84,7 @@ COST_FALSE_NEGATIVE = (1 − recovery_rate) + (phí_cố_định_mỗi_vụ / am
 
 ---
 
-## 3. `COST_FALSE_POSITIVE` - khó nhất, cần biện luận kỹ
+## 3. `COST_FALSE_POSITIVE` — khó nhất, cần biện luận kỹ
 
 **Ý nghĩa:** chặn nhầm 1 khách tốt phá hủy bao nhiêu giá trị.
 
@@ -148,24 +148,24 @@ robust:
 ## 6. Nguồn tham khảo nên tra (tìm ấn bản MỚI NHẤT)
 
 **Chi phí fraud tổng / hệ số nhân:**
-- LexisNexis Risk Solutions - *True Cost of Fraud Study* (chi phí mỗi $1 fraud)
-- Nilson Report - thiệt hại gian lận thẻ toàn cầu
-- Federal Reserve - *Payments Study*
+- LexisNexis Risk Solutions — *True Cost of Fraud Study* (chi phí mỗi $1 fraud)
+- Nilson Report — thiệt hại gian lận thẻ toàn cầu
+- Federal Reserve — *Payments Study*
 
 **Recovery rate / push-payment (giống PaySim):**
-- UK Finance - *Annual Fraud Report* (APP scam, tỉ lệ hoàn tiền)
-- FBI IC3 - *Internet Crime Report*
+- UK Finance — *Annual Fraud Report* (APP scam, tỉ lệ hoàn tiền)
+- FBI IC3 — *Internet Crime Report*
 - Báo cáo NHNN / hiệp hội ngân hàng VN (nếu có, để nội địa hóa)
 
 **False decline / churn (cho FP):**
-- Javelin Strategy & Research - *false declines*
-- Aite-Novarica Group - merchant fraud & declines
+- Javelin Strategy & Research — *false declines*
+- Aite-Novarica Group — merchant fraud & declines
 
 **Phí chargeback:**
 - Biểu phí chargeback của Visa/Mastercard; Chargebacks911
 
 **Lương analyst (nội địa hóa cho FP & review):**
-- VietnamWorks, ITviec, TopCV, Glassdoor - "Fraud Analyst" / "AML Analyst"
+- VietnamWorks, ITviec, TopCV, Glassdoor — "Fraud Analyst" / "AML Analyst"
 
 **Gợi ý câu tìm kiếm:**
 - `"true cost of fraud" LexisNexis 2024 filetype:pdf`
@@ -180,7 +180,7 @@ robust:
 
 Sau khi có số, sửa `src/config.py` (dòng 55–60) và **ghi nguồn ngay trong comment**:
 ```python
-# Nguồn: <báo cáo/URL> - recovery_rate=<...>, ...
+# Nguồn: <báo cáo/URL> — recovery_rate=<...>, ...
 COST_FALSE_NEGATIVE = ___
 # Nguồn: AOV=<...>, margin=<...>, P(churn)=<...>, CLV=<...>
 COST_FALSE_POSITIVE = ___

@@ -1,4 +1,4 @@
-"""Shared multi-model scoring - one source of truth for API and Streamlit.
+"""Shared multi-model scoring — one source of truth for API and Streamlit.
 
 The deployable ensemble bundle (`models/fraud_ensemble.joblib`) holds all three
 models trained on the `realistic` feature group, a shared FeatureTransformer, and
@@ -14,7 +14,7 @@ import joblib
 import numpy as np
 import pandas as pd
 
-# Decision severity ordering - higher means more restrictive.
+# Decision severity ordering — higher means more restrictive.
 SEVERITY = {"allow": 0, "review": 1, "block": 2}
 _BY_SEVERITY = {v: k for k, v in SEVERITY.items()}
 AGGREGATE_RULE = "max-risk"

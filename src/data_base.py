@@ -5,7 +5,7 @@ CSV dropped into data/raw/; if none is found it falls back to a schema-identical
 stand-in so the whole pipeline is runnable before the download completes.
 
 When the real CSV arrives, drop it in data/raw/ and everything downstream works
-unchanged - same columns, same target.
+unchanged — same columns, same target.
 """
 from __future__ import annotations
 

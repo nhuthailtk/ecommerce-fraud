@@ -1,4 +1,4 @@
-"""Business cost model - single source of truth for the €-impact of decisions.
+"""Business cost model — single source of truth for the €-impact of decisions.
 
 Fraud detection is a cost-optimization problem, not an accuracy problem. This
 module turns model decisions + ground-truth labels + transaction amounts into a

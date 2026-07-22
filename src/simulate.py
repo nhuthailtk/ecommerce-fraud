@@ -2,7 +2,7 @@
 
 Generates fresh synthetic transactions (PaySim base + synthetic risk context)
 and scores them with the deployed ensemble. Used by the Streamlit Live Feed page
-to emulate an incoming transaction stream. Pure functions only - no Streamlit - so
+to emulate an incoming transaction stream. Pure functions only — no Streamlit — so
 the generation and scoring logic is unit-testable on its own.
 """
 from __future__ import annotations
@@ -15,8 +15,8 @@ from infer import enrich
 from ensemble import score_batch, window_performance
 
 # Fresh transactions are generated a pool at a time (realistic ~0.15% fraud
-# rate); the page streams K rows per tick and regenerates a new pool - with a
-# new seed - when the current one is exhausted. Per-tick generation is avoided
+# rate); the page streams K rows per tick and regenerates a new pool — with a
+# new seed — when the current one is exhausted. Per-tick generation is avoided
 # because make_standin forces >=1 fraud per call, which would inflate the rate.
 DEFAULT_POOL_SIZE = 2000
 
@@ -71,7 +71,7 @@ def decision_timeline(scored_df: pd.DataFrame, bin_size: int = 25) -> pd.DataFra
 
     Expects columns `arrival` (1-based sequence) and `agg_decision`. Returns a
     DataFrame indexed by bucket-start arrival with columns ['review', 'block']
-    (allow is excluded - the chart shows only flagged transactions).
+    (allow is excluded — the chart shows only flagged transactions).
     """
     cols = ["review", "block"]
     if scored_df is None or len(scored_df) == 0:
@@ -96,6 +96,6 @@ def score_stream(raw_df: pd.DataFrame, bundle: dict) -> pd.DataFrame:
 
 
 def evaluate_on(bundle: dict, raw_df: pd.DataFrame) -> dict:
-    """Classification performance of a bundle on a labelled test set - used to
+    """Classification performance of a bundle on a labelled test set — used to
     compare model versions on identical data."""
     return window_performance(score_stream(raw_df, bundle))

@@ -1,4 +1,4 @@
-# Plan: Task 1 (Module 1) - Business Understanding & Data Generation trên PaySim
+# Plan: Task 1 (Module 1) — Business Understanding & Data Generation trên PaySim
 
 ## Context
 

@@ -1,8 +1,8 @@
 """In-app retraining for the live monitor.
 
 Refits the three ensemble models on a freshly-generated, current-distribution
-labelled sample - reusing the deployed transformer and each model's
-hyperparameters - and returns a new in-memory ensemble bundle. This is a fast
+labelled sample — reusing the deployed transformer and each model's
+hyperparameters — and returns a new in-memory ensemble bundle. This is a fast
 adaptation for the demo (a few seconds), not the full M1-M5 pipeline; the
 on-disk fraud_ensemble.joblib is not modified.
 """
