@@ -1,4 +1,4 @@
-"""API Tester page — build a transaction (from a preset or by hand) and score it
+"""API Tester page  build a transaction (from a preset or by hand) and score it
 through the live FastAPI /score endpoint, showing each model's result + the
 max-risk aggregate."""
 from __future__ import annotations
@@ -8,7 +8,7 @@ import streamlit as st
 from api_client import DEFAULT_BASE, health, score
 from embedded_api import ensure_api_running
 
-# Editable transaction fields — (key, label, kind). Matches api.main.Transaction.
+# Editable transaction fields  (key, label, kind). Matches api.main.Transaction.
 _TYPES = ["PAYMENT", "TRANSFER", "CASH_OUT", "CASH_IN", "DEBIT"]
 _FLOATS = ["amount", "oldbalanceOrg", "newbalanceOrig", "oldbalanceDest", "newbalanceDest",
            "ip_billing_distance_km"]
@@ -18,7 +18,7 @@ _FLAGS = ["is_new_device", "shipping_billing_mismatch", "is_disposable_email",
           "high_risk_country", "is_night"]
 _FIELDS = ["type"] + _FLOATS + _INTS + _FLAGS
 
-# Preset transactions — realistic starting points the user can then edit.
+# Preset transactions  realistic starting points the user can then edit.
 PRESETS: dict[str, dict] = {
     "🟢 Legit payment (expect allow)": {
         "type": "PAYMENT", "amount": 42.5, "oldbalanceOrg": 5000.0, "newbalanceOrig": 4957.5,
@@ -28,7 +28,7 @@ PRESETS: dict[str, dict] = {
         "hour_of_day": 14, "is_night": 0, "txn_count_last_24h": 3,
         "time_since_last_hours": 6, "account_txn_total": 300,
     },
-    "🔴 Fraudulent transfer — drained (expect block)": {
+    "🔴 Fraudulent transfer  drained (expect block)": {
         "type": "TRANSFER", "amount": 21279.19, "oldbalanceOrg": 21279.19, "newbalanceOrig": 0.0,
         "oldbalanceDest": 0.0, "newbalanceDest": 0.0, "account_age_days": 52,
         "is_new_device": 1, "shipping_billing_mismatch": 1, "num_failed_payment_attempts": 3,
@@ -53,7 +53,7 @@ PRESETS: dict[str, dict] = {
         "time_since_last_hours": 0, "account_txn_total": 2,
     },
 }
-_DEFAULT_PRESET = "🔴 Fraudulent transfer — drained (expect block)"
+_DEFAULT_PRESET = "🔴 Fraudulent transfer  drained (expect block)"
 _DECISION_STYLE = {"allow": ("✅", "success"), "review": ("🟡", "warning"), "block": ("🛑", "error")}
 
 
@@ -81,7 +81,7 @@ def _render_result(data: dict):
     agg = data.get("aggregate", {})
     icon, kind = _DECISION_STYLE.get(agg.get("decision", ""), ("❓", "info"))
     getattr(st, kind)(f"{icon} Aggregate decision: **{str(agg.get('decision', '?')).upper()}**  "
-                      f"· rule: {agg.get('rule', '—')}"
+                      f"· rule: {agg.get('rule', '')}"
                       + ("  · ⚠️ degraded (a model errored)" if agg.get("degraded") else ""))
     rows = []
     for key, m in data.get("models", {}).items():
@@ -99,13 +99,13 @@ def _render_result(data: dict):
 
 def render():
     st.title("🧪 API Tester")
-    st.caption("Build a transaction — from a preset or by hand — and score it through the "
+    st.caption("Build a transaction  from a preset or by hand  and score it through the "
                "live **POST /score** endpoint. Each model scores independently; the verdict "
                "is the max-risk aggregate.")
     api = ensure_api_running()
     if api.get("status") == "embedded":
         st.caption(f"🟢 Scoring API running **in-process** at {api['base_url']} "
-                   "(single-port deployment — no separate service needed).")
+                   "(single-port deployment  no separate service needed).")
     else:
         st.caption(f"🟢 Using externally-running API at {api['base_url']}.")
     _ensure_defaults()
@@ -116,7 +116,7 @@ def render():
         ok, info = health(st.session_state["at_base_url"])
         if ok:
             st.success(f"Connected · models: {', '.join(info.get('models', {}).values())} "
-                       f"· rule: {info.get('aggregate_rule', '—')}")
+                       f"· rule: {info.get('aggregate_rule', '')}")
         else:
             st.error(f"Cannot reach API: {info}\n\nStart it with: "
                      "`uvicorn api.main:app --host 127.0.0.1 --port 8000`")

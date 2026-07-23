@@ -1,13 +1,13 @@
 """Build a small, committable fallback for the demo app.
 
 `data/processed/transactions_context.parquet` is ~526MB on the real full PaySim
-data — too big for git. The Streamlit analytics pages (home/eval/cost/segment)
+data  too big for git. The Streamlit analytics pages (home/eval/cost/segment)
 and the monitoring view read that frame. This script writes a much smaller
 `context_sample.parquet` (~300k rows, ~26MB) that is committed to the repo so a
 fresh clone can run the whole app without rebuilding the full pipeline.
 
 The sample is STRATIFIED on `isFraud`, so it preserves the true fraud rate
-(~0.1291%) — the descriptive Segment page reports honest per-segment rates, and
+(~0.1291%)  the descriptive Segment page reports honest per-segment rates, and
 the Eval/Cost pages get a real (if smaller, approximate) test split. Pages that
 fall back to this file badge themselves as running in "sample mode".
 
@@ -29,7 +29,7 @@ OUT = DATA_PROCESSED / "context_sample.parquet"
 def build(target_rows: int = TARGET_ROWS) -> None:
     if not SRC.exists():
         raise FileNotFoundError(
-            f"{SRC} not found — build the full dataset first "
+            f"{SRC} not found  build the full dataset first "
             "(python src/build_dataset.py --full)."
         )
     df = pd.read_parquet(SRC)

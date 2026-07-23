@@ -1,4 +1,4 @@
-"""Model monitoring (Module 7, draft) — data & prediction drift.
+"""Model monitoring (Module 7, draft)  data & prediction drift.
 
 Core metric: Population Stability Index (PSI) per feature + on the model's
 predicted scores. PSI is transparent and dependency-free; an Evidently HTML
@@ -6,8 +6,8 @@ report is attempted as an optional extra.
 
 Drift bands (industry-standard):
     PSI < 0.10  : stable
-    0.10–0.25   : moderate drift — monitor
-    > 0.25      : significant drift — RETRAINING TRIGGER
+    0.10–0.25   : moderate drift  monitor
+    > 0.25      : significant drift  RETRAINING TRIGGER
 
 Run:  python monitoring/drift.py
 """
@@ -105,7 +105,7 @@ def load():
 
 def inject_drift(df: pd.DataFrame, rng) -> pd.DataFrame:
     """Simulate a distribution shift a monitor SHOULD catch (higher amounts,
-    farther IPs, more failed attempts) — e.g. an emerging fraud campaign."""
+    farther IPs, more failed attempts)  e.g. an emerging fraud campaign."""
     d = df.copy()
     d["amount"] *= rng.uniform(1.25, 1.6)
     d["ip_billing_distance_km"] *= 1.8
@@ -171,7 +171,7 @@ def main():
 
     triggered = table[table["psi_drifted"] >= RETRAIN_PSI]["feature"].tolist()
 
-    report = ["# Monitoring — Drift Report (draft)\n",
+    report = ["# Monitoring  Drift Report (draft)\n",
               f"Reference: day ≤ {int(med)} ({len(ref):,} rows) · "
               f"Current: day > {int(med)} ({len(cur_natural):,} rows)\n",
               f"Retraining trigger: any monitored PSI ≥ **{RETRAIN_PSI}**.\n",
@@ -179,7 +179,7 @@ def main():
               table.to_markdown(index=False) + "\n",
               "## Retraining decision\n",
               (f"- Natural split: **no retraining needed** (all < {RETRAIN_PSI}).\n"
-               f"- Simulated fraud campaign: **RETRAIN** — drift on: "
+               f"- Simulated fraud campaign: **RETRAIN**  drift on: "
                f"{', '.join(triggered)}.\n")]
     (REPORTS / "drift_report.md").write_text("\n".join(report), encoding="utf-8")
 

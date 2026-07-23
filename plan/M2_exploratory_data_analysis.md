@@ -1,4 +1,4 @@
-# Plan: Task 2 (Module 2) — Exploratory Data Analysis trên PaySim
+# Plan: Task 2 (Module 2)  Exploratory Data Analysis trên PaySim
 
 ## Context
 

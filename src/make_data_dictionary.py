@@ -44,7 +44,7 @@ def synthetic_table() -> str:
 def build_dictionary() -> str:
     base = pd.DataFrame(BASE_ROWS, columns=["Column", "Type", "Unit", "Valid range", "Description"])
     return "\n".join([
-        "# Data Dictionary — PaySim E-Commerce Fraud Detection\n",
+        "# Data Dictionary  PaySim E-Commerce Fraud Detection\n",
         "## 0. Overview\n",
         "- Source: Kaggle `rupakroy/online-payments-fraud-detection-dataset`.\n",
         "- Active raw file: `data/online-payments-fraud-detection-dataset/PS_20174392719_1491204439457_log.csv`.\n",

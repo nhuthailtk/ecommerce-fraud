@@ -1,4 +1,4 @@
-# Data Dictionary — PaySim E-Commerce Fraud Detection
+# Data Dictionary  PaySim E-Commerce Fraud Detection
 
 ## 0. Overview
 

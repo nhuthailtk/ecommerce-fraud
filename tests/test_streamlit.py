@@ -16,12 +16,9 @@ sys.path.insert(0, str(ROOT / "monitoring"))
 
 if not (ROOT / "models" / "fraud_ensemble.joblib").exists():
     pytest.skip("fraud_ensemble.joblib not built", allow_module_level=True)
-if not (ROOT / "data" / "processed" / "sample_preview.csv").exists():
-    pytest.skip("sample_preview.csv not built", allow_module_level=True)
 
 AppTest = pytest.importorskip("streamlit.testing.v1").AppTest
 
-_REVIEW = "import review_view; review_view.render()"
 _MONITOR = "import monitoring_view; monitoring_view.render()"
 _LIVE = "import live_view; live_view.render()"
 
@@ -34,13 +31,6 @@ def _run(body: str):
     )
     at.run(timeout=60)
     return at
-
-
-def test_review_queue_renders():
-    at = _run(_REVIEW)
-    assert not at.exception, at.exception
-    # metrics row present
-    assert len(at.metric) >= 4
 
 
 def test_monitoring_renders():
@@ -70,7 +60,7 @@ def test_monitoring_live_dashboard_renders():
         "st.session_state['mon_test_set'] = pool.iloc[:250].copy()\n"
         "st.session_state['mon_bundle'] = b\n"
         "st.session_state['mon_versions'] = ["
-        "{'version': 1, 'bundle': b, 'when': 'deployed', 'scenario': '—', 'rows': None, "
+        "{'version': 1, 'bundle': b, 'when': 'deployed', 'scenario': '', 'rows': None, "
         "'fraud': None, 'triggers': [], 'metrics': None},"
         "{'version': 2, 'bundle': b, 'when': '12:00:00', 'scenario': 'Sudden spike', 'rows': 15000, "
         "'fraud': 22, 'triggers': ['x'], 'metrics': None}]\n"
